@@ -21,6 +21,11 @@ async function handler(req,res){
         await todoCollection.updateOne({_id: new ObjectId(_id)},{$set: {isCompleted}});
         res.status(200).json({ message: 'Todo updated successfully' });
     }
+    if(req.method === 'DELETE'){
+        const {_id} = req.body;
+        await todoCollection.deleteOne({ _id: new ObjectId(_id) });
+        res.status(200).json({ message: 'Todo deleted successfully' });
+    }
     client.close();
 }
 

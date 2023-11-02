@@ -42,6 +42,7 @@ export default function Home() {
   const handleDelete = (item) => {
     const newItems = todoItems.filter(x => x.id !== item.id);
     setTodoItems(newItems);
+    deleteInDB(item);
   }
 
   const handleCompletedItems = (item,e) => {
@@ -68,6 +69,17 @@ export default function Home() {
     });
     const data = await response.json();
     console.log(data);
+  }
+
+  async function deleteInDB(item){
+    const response = await fetch('/api/todoHandler',{
+      method:'DELETE',
+      body:JSON.stringify(item),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+
   }
 
   
