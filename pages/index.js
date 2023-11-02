@@ -21,7 +21,8 @@ export default function Home() {
     const item = {
       id: Math.floor(Math.random() * 100),
       todoItem: todo,
-      isCompleted: false
+      isCompleted: false,
+      
     }
     setTodo('');
     setTodoItems(oldList => [...oldList, item]);
@@ -54,7 +55,19 @@ export default function Home() {
       const updatedItems = completedItems.filter(x => x.id !== item.id);
       setCompletedItems(updatedItems);
     }
-    console.log(completedItems)
+    updateStatusInDB(item);
+  }
+
+  async function updateStatusInDB(item){
+    const response = await fetch('/api/todoHandler', {
+      method:'PUT',
+      body:JSON.stringify(item),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const data = await response.json();
+    console.log(data);
   }
 
   

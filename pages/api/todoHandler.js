@@ -1,6 +1,6 @@
 //route will be /api/todoHandler
 
-import {MongoClient} from 'mongodb';
+import {MongoClient, ObjectId} from 'mongodb';
 
 async function handler(req,res){
     const client = await MongoClient.connect('mongodb+srv://sumathi291098:nsAJXuk1WXZzpF4d@cluster0.aucbino.mongodb.net/todos?retryWrites=true&w=majority');
@@ -14,7 +14,12 @@ async function handler(req,res){
     if(req.method === 'GET'){
         const data = await todoCollection.find({}).toArray();
         res.status(200).json({ todoList: data });
-
+    }
+    if(req.method === 'PUT'){
+        const {_id,isCompleted} = req.body;
+        console.log(req.body);
+        await todoCollection.updateOne({_id: new ObjectId(_id)},{$set: {isCompleted}});
+        res.status(200).json({ message: 'Todo updated successfully' });
     }
     client.close();
 }
